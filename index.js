@@ -9,8 +9,8 @@ const publicFolderPath = '/Users/harshagarwal/mono/mtf-monorepo/apps/webui/.outp
 app.use(express.static(publicFolderPath));
 
 app.get('/dtapppwa/:version/*', function (request, response) {
-    const fileName = request.params[0];
-    const updatedFileName = path.extname(fileName) ? fileName : 'index.html';
+    const fileName = request.params[0] || 'index.html';
+    const updatedFileName = path.extname(fileName) ? fileName : `${fileName}.html`;
     const filePath = path.join(publicFolderPath, updatedFileName);
 
     return response.sendFile(filePath);
