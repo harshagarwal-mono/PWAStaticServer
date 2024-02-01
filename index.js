@@ -1,14 +1,19 @@
-const express = require('express')
-const app = express()
-const port = 4000
+const express = require('express');
 const path = require('path');
+const { existsSync } = require('fs');
+const app = express();
 
+const port = 4000;
 const publicFolderPath = '/Users/harshagarwal/mono/mtf-monorepo/apps/webui/.output/public';
 
-app.use(express.static(publicFolderPath))
+app.use(express.static(publicFolderPath));
 
 app.get('/dtapppwa/:version/*', function (request, response) {
-    response.sendFile(path.resolve(__dirname, path.join(publicFolderPath, request.params[0])));
+    const fileName = request.params[0];
+    const updatedFileName = path.extname(fileName) ? fileName : 'index.html';
+    const filePath = path.join(publicFolderPath, updatedFileName);
+
+    return response.sendFile(filePath);
 });
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
